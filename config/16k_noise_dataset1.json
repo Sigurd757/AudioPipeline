@@ -1,0 +1,5 @@
+{
+    "demand": "/data1/01_Raw_Data_Base/Noise_Raw/demand",
+    "esc50": "/data1/01_Raw_Data_Base/Noise_Raw/ESC-50-master",
+    "fsd50k": "/data1/01_Raw_Data_Base/Noise_Raw/fsd50k"
+}

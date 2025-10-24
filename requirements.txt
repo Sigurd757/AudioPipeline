@@ -1,0 +1,13 @@
+numpy<2.0
+pandas
+tqdm
+librosa
+soundfile
+silero_vad
+funasr
+webrtcvad
+onnxruntime
+torch
+torchaudio
+tensorflow
+tensorflow-hub
