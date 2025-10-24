@@ -69,8 +69,8 @@ The core script `build_16k_audio_dataset.sh` executes the following steps in ord
 
 ### 1. Clone the Repository  
 ```bash
-git clone [Your_Repository_URL]
-cd [Your_Repository_Name]
+git clone https://github.com/Sigurd757/AudioPipeline.git
+cd AudioPipeline
 ```
 
 ### 2. Install FFmpeg  

@@ -60,8 +60,8 @@
 
 1.  **克隆仓库**
     ```bash
-    git clone [Your_Repository_URL]
-    cd [Your_Repository_Name]
+    git clone https://github.com/Sigurd757/AudioPipeline.git
+    cd AudioPipeline
     ```
 
 2.  **安装 FFmpeg**
