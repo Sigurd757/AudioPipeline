@@ -261,49 +261,15 @@ def run_screener_stats_and_copy(args, logger):
         for _, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc=f"复制 {desc} 文件"):
             source_path = row["final_path"] # 这是文件的绝对路径
             try:
-                # 1. 计算相对路径
-                # source_path = /data/processed/step_03_silence/F0001/F0001_001_chunk0001.wav
-                # source_root_dir = /data/processed
-                # relative_path = step_03_silence/F0001/F0001_001_chunk0001.wav
                 relative_path = os.path.relpath(source_path, source_root_dir)
-                
-                # 2. 清理分类标签名，使其适用于目录名
                 audio_class = row["fused_label"].replace('/', '_').replace(' ', '_')
                 if not audio_class: audio_class = "Unknown_Class"
                 
-                # 3. 解析数据集名称 (从相对路径中提取)
                 path_parts = relative_path.split(os.sep)
                 if len(path_parts) > 1:
-                    # dataset_name 假设在相对路径的第二部分
-                    # e.g., 'step_03_silence' / 'F0001' / 'F0001_001_chunk0001.wav'
-                    # path_parts[1] 可能是 'F0001' (来自03脚本) 或 'my_dataset' (来自01脚本)
-                    # 这里的逻辑假设01脚本的 target_root/dataset_name/ 结构被03脚本的 output_dir/ 覆盖了
-                    #
-                    # 让我们重新审视03脚本：
-                    # final_path = os.path.join(cfg['output_dir'], relative_path)
-                    # relative_path = os.path.relpath(original_path, cfg['chunks_dir_base'])
-                    #
-                    # 02脚本：
-                    # output_path = os.path.join(output_dir, sub_dir_name, f"{chunk_id}.wav")
-                    # sub_dir_name = audio_id.split('_')[0] (e.g., F0001)
-                    #
-                    # 01脚本：
-                    # output_file_path = os.path.join(cfg['target_root'], dataset_name, ...)
-                    #
-                    # 这意味着 `source_path` 的结构是：
-                    # 03_output_dir / F0001 / F0001_001_chunk0001.wav
-                    #
-                    # 如果 `source_root_dir` 被设为 `03_output_dir`：
-                    # relative_path = F0001 / F0001_001_chunk0001.wav
-                    # path_parts[0] = F0001
-                    #
-                    # *** 修正复制逻辑的注释 ***
-                    # 假设 source_root_dir = 03_output_dir (或 02_output_dir, 如果未修改)
-                    # relative_path = F0001/F0001_001_chunk0001.wav
-                    # path_parts = ['F0001', 'F0001_001_chunk0001.wav']
-                    dataset_name = path_parts[0] # F0001
-                    original_sub_path_parts = path_parts[1:] # ['F0001_001_chunk0001.wav']
-                    original_sub_path = os.path.join(*original_sub_path_parts)
+                    dataset_name = path_parts[1]
+                    original_sub_path_parts = path_parts[2:]
+                    original_sub_path = os.path.join(*original_sub_path_parts) if original_sub_path_parts else os.path.basename(source_path)
                     
                 else: 
                     # 路径解析失败的备用方案
